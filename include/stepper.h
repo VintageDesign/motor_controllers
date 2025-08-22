@@ -1,9 +1,9 @@
 #ifndef STEPPER_H
 #define STEPPER_H
 
-#include <esp_log.h>
 #include <driver/gpio.h>
 #include <driver/gptimer.h>
+#include <esp_log.h>
 
 #define NS_TO_T_TICKS(x) (x)
 #define TIMER_F 1000000ULL
@@ -41,7 +41,10 @@ public:
   void enable_motor();
 
   void set_dir(bool dir_state);
+
 private:
+  motor_status m_current_state;
+
   void set_en(bool en_state);
 
   static bool xISRwrap(gptimer_t *timer, const gptimer_alarm_event_data_t *data,
@@ -70,9 +73,7 @@ private:
   float m_speed_rad_per_sec = 100;
 
   gptimer_handle_t m_timer_handle;
-  gptimer_alarm_config_t m_alarm_config = {
-      .reload_count = 0,
-  };
+  gptimer_alarm_config_t m_alarm_config;
 };
 
 #endif

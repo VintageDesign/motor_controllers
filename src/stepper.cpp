@@ -31,6 +31,7 @@ Stepper::Stepper(uint8_t step_pin, uint8_t dir_pin, uint8_t en_pin,
       .clk_src = GPTIMER_CLK_SRC_DEFAULT,
       .direction = GPTIMER_COUNT_UP,
       .resolution_hz = TIMER_F,
+      .flags = {0},
   };
 
   ESP_ERROR_CHECK(gptimer_new_timer(&timer_conf, &m_timer_handle));
@@ -69,6 +70,7 @@ void Stepper::write_rad(float relative_rad) {
 
   gptimer_start(m_timer_handle);
   m_current_state = motor_status::ACC;
+  ESP_LOGI(TAG, "Exit");
 }
 
 void Stepper::write_absolute_rad(float absolute_rad) {
